@@ -1,0 +1,23 @@
+[v3_req]
+distinguished_name  = req_distinguished_name
+x509_extensions     = v3_ca
+
+[req_distinguished_name]
+
+# 以下内容可随意填写
+countryName             = CN (2 letter code)
+countryName_min         = 2
+countryName_max         = 2
+stateOrProvinceName     = HB
+localityName            = WuHan
+0.organizationName      = My CA
+organizationalUnitName  = zx OU
+commonName              = zx common name
+commonName_max          = 64
+emailAddress            = none@qq.com
+emailAddress_max        = 64
+
+[ v3_ca ]
+basicConstraints		= critical, CA:TRUE
+
+

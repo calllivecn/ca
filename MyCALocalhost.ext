@@ -1,0 +1,9 @@
+subjectAltName	= @alt_name
+extendKeyUsage	= serverAuth
+
+
+[alt_names]
+DNS.1 = nginx.cc
+
+# ip 
+#IP.1 = 192.168.10.10

@@ -11,51 +11,33 @@ fi
 
 
 
-CONFIG="-extfile myopenssl.cnf"
+#CONFIG="-extfile MyCA.cnf"
 
 
 country_name="cn"
 state_name="hubei"
 locality_name="wuhan"
 
-CN_root="zx root CA"
-OU_root="zx OU"
-O_root="zx O"
+CN_ca="zx root CA"
+OU_ca="zx OU"
+O_ca="zx O"
 
 
-make_root_ca(){
+make_ca(){
 
 # 1. 生成私钥root.key
-openssl genrsa -out root.key 2048
-
-# 2. 生成ca 证书请求
-#openssl req -new -key root.key -subj "/CN=${CN_root}/OU=${OU_root}/O=${O_root}" -out root.csr
-openssl req -new -key root.key -subj "/CN=${CN_root}/OU=${OU_root}/O=${O_root}" -out root.csr
-
-# 3. 签名ca root证书
-#openssl x509 -req -extensions v3_req -signkey root.key -in root.csr -out root.crt -days 3650
-openssl x509 -req $CONFIG -extensions v3_ca -signkey root.key -in root.csr -out root.crt -days 3650
-
-}
-#make_root_ca
-
-
-CN="zx ca CA"
-OU="zx ca OU"
-O="zx ca O"
-
-make_ca_crt(){
-
-# 1. 生成ca.key
 openssl genrsa -out ca.key 2048
 
-# 2. 生成请求csr
-openssl req -new -key ca.key -subj "/CN=${CN}/OU=${OU}/O=${O}" -out ca.csr
+# 2. 生成ca 证书请求
+#openssl req -new -key ca.key -subj "/CN=${CN_ca}/OU=${OU_ca}/O=${O_ca}" -out ca.csr
+openssl req -new -key ca.key -subj "/CN=${CN_ca}/OU=${OU_ca}/O=${O_ca}" -out ca.csr
 
-openssl x509 -req -extensions v3_req -days 365 -signkey ca.key -in ca.csr -out ca.crt
+# 3. 签名ca root证书
+#openssl x509 -req -extensions v3_req -signkey ca.key -in ca.csr -out ca.crt -days 3650
+openssl x509 -req $CONFIG -extensions v3_ca -signkey ca.key -in ca.csr -out ca.crt -days 3650
 
 }
-#make_ca_crt
+#make_ca
 
 CN="nginx.cc"
 OU="zx nginx test OU"
@@ -74,6 +56,14 @@ openssl req -new -key server.key -subj "/CN=${CN}/OU=${OU}/O=${O}" -out server.c
 openssl x509 -req $CONFIG -extensions v3_req -CA ca.crt -CAkey ca.key -CAcreateserial -days 3650 -in server.csr -out server.crt
 
 }
-make_server_crt
+#make_server_crt
 
 
+selfsign(){
+
+#openssl genrsa selfsign.key 2048
+openssl genrsa -out selfsign.key 2048
+openssl req -new -x509 -days 365 -key selfsign.key -out selfsign.crt
+
+}
+selfsign
